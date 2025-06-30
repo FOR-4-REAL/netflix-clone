@@ -72,7 +72,6 @@ graph TB
     style D fill:#01d277
     style E fill:#ff0000
 ```
-![Image](https://github.com/user-attachments/assets/f6a8869b-0dfb-4aec-9b55-a385ec8ccb3b)
 
 ## 3. 프로젝트 구조
 
