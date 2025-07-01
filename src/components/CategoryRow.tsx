@@ -24,9 +24,15 @@ export default function CategoryRow({ genreName, genreId, country }: Props) {
     const fetchMovies = async () => {
       const res = await tmdb.get(`/discover/movie?with_genres=${genreId}`, {
         params: {
-          with_origin_country: country ?? null,
+          with_genres: genreId,
+          with_origin_country: country ?? null, // 기본값을 "KR"로
           sort_by: "popularity.desc",
           language: "ko",
+          include_adult: false,
+          with_watch_providers: 8,
+          watch_region: "KR",
+          certification_country: "KR",
+          certification_lte: "12",
         },
       });
       setMovies(res.data.results);

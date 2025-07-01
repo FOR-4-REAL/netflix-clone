@@ -9,7 +9,7 @@ import { Keyboard, Mousewheel } from "swiper/modules";
 import CategoryRow from "@/components/CategoryRow";
 import useSwiperKeyboardControl from "../utils/swiper";
 
-type Movie = {
+export type Movie = {
   id: number;
   title: string;
   name: string;
@@ -89,13 +89,21 @@ function Bandder() {
 
   useEffect(() => {
     getTop10PopularMovies().then((movies) => {
-      const random = Math.floor(Math.random() * movies.length);
+      let random = Math.floor(Math.random() * movies.length);
+      if (movie && movies[random]?.id === movie.id && movies.length > 1) {
+        random = (random + 1) % movies.length;
+      }
+      if (movies[random]?.backdrop_path === null) {
+        random + 1
+      } 
       setMovie(movies[random]);
     });
   }, []);
 
   if (!movie) return null;
 
+  console.log(movie, movie.backdrop_path);
+  
   return (
     <section
       className="relative h-[80vh] text-white flex items-end"
@@ -152,12 +160,12 @@ export default function Home() {
       <NetflixOriginalSectionSwiper />
 
       <CategoryRow
-        genreName="한국 액션 영화"
+        genreName="한국 액션"
         genreId={80}
         country={"KR"}
       />
-      <CategoryRow genreName="해외 인기 영화" genreId={28} />
-      <CategoryRow genreName="시간순삭 모험 영화" genreId={12} country={"KR"} />
+      <CategoryRow genreName="해외 인기 " genreId={28} />
+      <CategoryRow genreName="시간순삭 모험 " genreId={12} country={"KR"} />
       <CategoryRow genreName="인기 에니메이션" genreId={16} country={"JP"} />
     </>
   );
