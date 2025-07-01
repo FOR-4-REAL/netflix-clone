@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #121212;
+  }
+}
+
+.rank-number {
+  font-size: 180px;
+  font-family: monospace;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: #fff;
+  color: #fff;
+  position: absolute;
+  line-height: 1;
+  user-select: none;
+}
