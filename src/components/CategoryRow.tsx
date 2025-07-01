@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
-import "swiper/css";
 import tmdb from "../utils/HTTP";
 import useSwiperKeyboardControl from "../utils/swiper";
 
@@ -40,12 +39,32 @@ export default function CategoryRow({ genreName, genreId, country }: Props) {
       <h2 className="text-2xl font-bold text-white mb-4">{genreName}</h2>
       <Swiper
         spaceBetween={16}
-        slidesPerView={6}
         onSwiper={registerSwiper}
         mousewheel={{ forceToAxis: true }}
         simulateTouch
         grabCursor
         modules={[Keyboard, Mousewheel]}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+          },
+          480: {
+            slidesPerView: 2.5,
+            spaceBetween: 12,
+          },
+          768: {
+            slidesPerView: 3.5,
+            spaceBetween: 16,
+          },
+          1024: {
+            slidesPerView: 4.5,
+            spaceBetween: 16,
+          },
+          1280: {
+            slidesPerView: 5.5,
+            spaceBetween: 16,
+          },
+        }}
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie.id} className="py-4">

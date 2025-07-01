@@ -1,15 +1,12 @@
-// src/pages/Home.tsx
 import { useEffect, useState } from "react";
 import {
   getNetflixOriginalsTop10,
-  getPopularMovies,
   getTop10PopularMovies,
 } from "../service/movie";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
 
-import "swiper/css";
-import CategoryRow from "../components/CategoryRow";
+import CategoryRow from "@/components/CategoryRow";
 import useSwiperKeyboardControl from "../utils/swiper";
 
 type Movie = {
@@ -35,14 +32,33 @@ function NetflixOriginalSectionSwiper() {
         넷플릭스 오리지널 인기순위
       </h2>
       <Swiper
-        slidesPerView={5}
         className="!py-4 "
-        mousewheel={{ forceToAxis: true }} // 수직 스크롤과 구분
+        mousewheel={{ forceToAxis: true }}
         simulateTouch={true}
         grabCursor={true}
         onSwiper={registerSwiper}
         modules={[Keyboard, Mousewheel]}
-        keyboard={{ enabled: true }}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+          },
+          480: {
+            slidesPerView: 2,
+            spaceBetween: 12,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 16,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 16,
+          },
+          1280: {
+            slidesPerView: 6,
+            spaceBetween: 16,
+          },
+        }}
       >
         {originals.map((movie, idx) => (
           <SwiperSlide key={movie.id} className="relative">
@@ -127,11 +143,7 @@ function Bandder() {
 }
 
 export default function Home() {
-  const [movies, setMovies] = useState<Movie[]>([]);
 
-  useEffect(() => {
-    getPopularMovies().then(setMovies);
-  }, []);
 
   return (
     <>
@@ -140,7 +152,7 @@ export default function Home() {
       <NetflixOriginalSectionSwiper />
 
       <CategoryRow
-        genreName="한국 액션 인기 영화"
+        genreName="한국 액션 영화"
         genreId={80}
         country={"KR"}
       />
