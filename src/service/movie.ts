@@ -1,3 +1,4 @@
+import type { Movie } from "@/pages/Home.tsx";
 import tmdb from "../utils/HTTP.ts";
 
 export async function getPopularMovies() {
@@ -17,21 +18,18 @@ export async function getPopularMovies() {
 }
 
 export async function getTop10PopularMovies() {
-  const today = new Date().toISOString().split("T")[0];
-  const res = await tmdb.get("/discover/movie", {
+  const res = await tmdb.get<{ results: Movie[] }>("/discover/movie", {
     params: {
       with_origin_country: "KR",
-      sort_by: "release_date.desc",
-      "release_date.lte": today,
+      sort_by: "popularity.desc",
       include_adult: false,
       with_watch_providers: 8,
       watch_region: "KR",
       certification_country: "KR",
-      certification_lte: "12",
     },
   });
 
-  return res.data.results;
+  return res.data.results.filter((movies) => movies.backdrop_path !== null);
 }
 
 export async function getNetflixOriginalsTop10() {
@@ -46,4 +44,32 @@ export async function getNetflixOriginalsTop10() {
     },
   });
   return res.data.results.slice(0, 10);
+}
+
+export async function fetchDetailBundle(
+  contentType: "movie" | "tv",
+  id: string
+) {
+  try {
+    const [detailRes, videosRes, castRes] = await Promise.all([
+      tmdb.get(`/${contentType}/${id}`, {
+        params: { language: "ko" },
+      }),
+      tmdb.get(`/${contentType}/${id}/videos`, {
+        params: { language: "ko" },
+      }),
+      tmdb.get(`/${contentType}/${id}/credits`, {
+        params: { language: "ko" },
+      }),
+    ]);
+
+    return {
+      detail: detailRes.data,
+      videos: videosRes.data.results,
+      cast: castRes.data.cast,
+    };
+  } catch (error) {
+    console.error("상세정보 로드 실패", error);
+    throw error;
+  }
 }

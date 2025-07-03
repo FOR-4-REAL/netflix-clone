@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard, Mousewheel } from "swiper/modules";
 import tmdb from "../utils/HTTP";
 import useSwiperKeyboardControl from "../utils/swiper";
+import { Link } from "react-router-dom";
 
 type Movie = {
   id: number;
@@ -74,13 +75,17 @@ export default function CategoryRow({ genreName, genreId, country }: Props) {
       >
         {movies.map((movie) => (
           <SwiperSlide key={movie.id} className="py-4">
-            <a href="#" tabIndex={0} className="cursor-pointer">
+            <Link
+              to={`/movie/${movie.id}`}
+              tabIndex={0}
+              className="cursor-pointer"
+            >
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
                 className="rounded-md shadow-md w-[280px] h-[360px] object-cover"
               />
-            </a>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>

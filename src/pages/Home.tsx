@@ -8,6 +8,7 @@ import { Keyboard, Mousewheel } from "swiper/modules";
 
 import CategoryRow from "@/components/CategoryRow";
 import useSwiperKeyboardControl from "../utils/swiper";
+import { Link } from "react-router-dom";
 
 export type Movie = {
   id: number;
@@ -62,7 +63,7 @@ function NetflixOriginalSectionSwiper() {
       >
         {originals.map((movie, idx) => (
           <SwiperSlide key={movie.id} className="relative">
-            <a tabIndex={0} href={void 0} className="cursor-pointer">
+            <Link to={`/tv/${movie.id}`} tabIndex={0} className="cursor-pointer">
               {idx > 0 ? (
                 <span className="rank-number absolute -bottom-0 -left-20">
                   {idx}
@@ -76,7 +77,7 @@ function NetflixOriginalSectionSwiper() {
                 alt={movie.name || movie.title}
                 className="relative rounded-sm shadow-lg h-[300px] object-cover z-1"
               />
-            </a>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
@@ -93,17 +94,13 @@ function Bandder() {
       if (movie && movies[random]?.id === movie.id && movies.length > 1) {
         random = (random + 1) % movies.length;
       }
-      if (movies[random]?.backdrop_path === null) {
-        random + 1
-      } 
       setMovie(movies[random]);
     });
   }, []);
 
+
   if (!movie) return null;
 
-  console.log(movie, movie.backdrop_path);
-  
   return (
     <section
       className="relative h-[80vh] text-white flex items-end"
